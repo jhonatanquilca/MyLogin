@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class ActividadPrincipal extends AppCompatActivity {
+//    http://cursoandroidstudio.blogspot.com/2015/01/base-de-datos-remotas-login.html
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
