@@ -1,7 +1,7 @@
 package login.mylogin.models;
 
 /**
- * Created by OMAR on 14/10/2015.
+ * Created by Jhonatan Quilca
  */
 public class User {
 }
