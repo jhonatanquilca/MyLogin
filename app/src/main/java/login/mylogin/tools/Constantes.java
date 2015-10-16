@@ -4,20 +4,11 @@ package login.mylogin.tools;
  * Created by Jhonatan Quilca
  */
 public class Constantes {
-    /**
-     * Transición Home -> Detalle
-     */
-    public static final int CODIGO_DETALLE = 100;
-
-    /**
-     * Transición Detalle -> Actualización
-     */
-    public static final int CODIGO_ACTUALIZACION = 101;
 
     /**
      * variable de elecconde peticion http decide si se pa a poner en produccion o es un a prueba local
      */
-    private static final Boolean onLine = true;
+    private static final Boolean onLine = false;
     /**
      * Puerto que utilizas para la conexión.
      * Dejalo en blanco si no has configurado esta carácteristica.
@@ -32,15 +23,24 @@ public class Constantes {
     /**
      * URLs del Web Service
      */
-    public static final String ADMIN = IP + PUERTO_HOST + project + "/cliente/clienteWs/admin";
-    public static final String SEARCH = IP + PUERTO_HOST + project + "/cliente/clienteWs/search/param/";
-    public static final String VIEW = IP + PUERTO_HOST + project + "/cliente/clienteWs/view/id/";
-    public static final String UPDATE = IP + PUERTO_HOST + project + "/cliente/clienteWs/update/id/";
-    public static final String DELETE = IP + PUERTO_HOST + project + "/cliente/clienteWs/delete/id/";
-    public static final String INSERT = IP + PUERTO_HOST + project + "/cliente/clienteWs/create";
+    public static final String LOGIN = IP + PUERTO_HOST + project + "/cruge/uiWs/login/";
+    public static final String LOGOUT = IP + PUERTO_HOST + project + "/cruge/uiWs/logout";
 
     /**
      * Clave para el valor extra que representa al identificador de un Cliente
      */
     public static final String EXTRA_ID = "IDEXTRA";
+
+    /**
+     * metodo que forma la url a ser utilizada por volley
+     *
+     * @param user     String nombre o email de usuario
+     * @param password String cpmtraseña del usuario
+     */
+    public static String makeLoginUrl(String user, String password) {
+//        return LOGIN + "CrugeLogon%5busername%5d/" + user + "/CrugeLogon%5bpassword%5b/" + password + "/CrugeLogon%5brememberMe%5d/0";
+        return LOGIN + "CrugeLogon[username]/admin@tucorreo.com/CrugeLogon[password]/admin/CrugeLogon[rememberMe]/0";
+    }
+
+
 }
