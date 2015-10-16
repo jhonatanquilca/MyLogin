@@ -41,7 +41,6 @@ public class ActividadPrincipal extends AppCompatActivity {
         buttom_iniciar_sesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getApplicationContext(), "Usuario:\"" + input_user.getText().toString() + "\"  Contraseña:\"" + input_password.getText().toString() + "\"", Toast.LENGTH_SHORT).show();
                 final String newUrl = Constantes.makeLoginUrl(input_user.getText().toString(), input_password.getText().toString());
                 // Realizar petición de logeo
                 VolleySingleton.getInstance(getApplicationContext()).
@@ -54,7 +53,6 @@ public class ActividadPrincipal extends AppCompatActivity {
 
                                             @Override
                                             public void onResponse(JSONObject response) {
-                                                Toast.makeText(getApplicationContext(), newUrl, Toast.LENGTH_SHORT).show();
                                                 Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_LONG).show();
 
 
@@ -63,8 +61,8 @@ public class ActividadPrincipal extends AppCompatActivity {
                                         new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                Toast.makeText(getApplicationContext(), "Error Volley: " + error.getMessage() + newUrl, Toast.LENGTH_LONG).show();
-//                                        Toast.makeText(getApplicationContext(), "Error de conexión "+newUrl, Toast.LENGTH_LONG).show();
+//                                                Toast.makeText(getApplicationContext(), "Error Volley: " + error.getMessage() + newUrl, Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getApplicationContext(), "Error de conexión " + newUrl, Toast.LENGTH_LONG).show();
                                             }
                                         }
                                 )

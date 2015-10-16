@@ -18,7 +18,7 @@ public class Constantes {
     /**
      * Dirección IP de genymotion o AVD
      */
-    private static final String IP = onLine ? "http://www.drivehouse.bugs3.com" : "http://192.168.1.61";
+    private static final String IP = onLine ? "http://www.drivehouse.bugs3.com" : "http://192.168.42.169";
     private static final String project = onLine ? "" : "/driveworkhouse";
     /**
      * URLs del Web Service
@@ -38,8 +38,7 @@ public class Constantes {
      * @param password String cpmtraseña del usuario
      */
     public static String makeLoginUrl(String user, String password) {
-//        return LOGIN + "CrugeLogon%5busername%5d/" + user + "/CrugeLogon%5bpassword%5b/" + password + "/CrugeLogon%5brememberMe%5d/0";
-        return LOGIN + "CrugeLogon[username]/admin@tucorreo.com/CrugeLogon[password]/admin/CrugeLogon[rememberMe]/0";
+        return LOGIN + "CrugeLogon[username]/" + user + "/CrugeLogon[password]/" + password + "/CrugeLogon[rememberMe]/0";
     }
 
 
