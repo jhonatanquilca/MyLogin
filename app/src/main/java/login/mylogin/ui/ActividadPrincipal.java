@@ -52,8 +52,7 @@ public class ActividadPrincipal extends Activity {
             @Override
             public void onClick(View v) {
 
-                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
-
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(input_password.getWindowToken(), 0);
 
                 pDialog = new ProgressDialog(ActividadPrincipal.this);
@@ -73,7 +72,6 @@ public class ActividadPrincipal extends Activity {
                                         new Response.Listener<JSONObject>() {
 
 
-
                                             @Override
                                             public void onResponse(JSONObject response) {
                                                 try {
@@ -85,6 +83,7 @@ public class ActividadPrincipal extends Activity {
                                                     if (success) {
                                                         pDialog.hide();
                                                         mensaje = "Inicio de sesion Exitoso!";
+                                                        /*paso a la sigiente penatalla*/
                                                     } else {
                                                         try {
 
@@ -109,10 +108,7 @@ public class ActividadPrincipal extends Activity {
 
 
                                                         } catch (JSONException e1) {
-                                                            Toast.makeText(
-                                                                    getApplicationContext(),
-                                                                    "Erros: " + response.getString("errors"),
-                                                                    Toast.LENGTH_LONG).show();
+                                                            Toast.makeText(getApplicationContext(), "Erros: " + response.getString("errors"), Toast.LENGTH_LONG).show();
                                                         }
 
                                                         pDialog.hide();
