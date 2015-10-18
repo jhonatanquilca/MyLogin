@@ -44,7 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:text="@string/label_buttom_iniciar_sesion" />
+        android:text="@string/label_buttom_iniciar_sesion"
+        android:enabled="false" />
 
     Spinner
     android:id="@+id/spinner"

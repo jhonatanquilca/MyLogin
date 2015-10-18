@@ -6,4 +6,11 @@
     <string name="label_input_user">Usuario o Email</string>
     <string name="label_input_password">Contraseña</string>
     <string name="label_buttom_iniciar_sesion">iniciar sesión</string>
+    <string name="title_activity_actividad_secundaria">ActividadSecundaria</string>
+
+    <!-- Diálogos -->
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_descartar_msg">¿Descartar Cambios?</string>
+    <string name="dialog_cancelar">Cancelar</string>
+    <string name="dialog_eliminar_msg">¿Está seguro de desea eliminar este registro?</string>
 </resources>
