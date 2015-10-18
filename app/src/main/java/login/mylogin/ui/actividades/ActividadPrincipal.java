@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -48,9 +49,12 @@ public class ActividadPrincipal extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_principal);
 
+        String id = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
+        Toast.makeText(getApplicationContext(), "ID DEL DISPOSITIVO:"+id, Toast.LENGTH_LONG).show();
         input_user = (EditText) findViewById(R.id.input_user);
         input_password = (EditText) findViewById(R.id.input_password);
         buttom_iniciar_sesion = (Button) findViewById(R.id.buttom_iniciar_sesion);
+
 
 /**
  * acciones para controles visuales
