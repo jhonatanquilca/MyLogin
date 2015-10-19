@@ -37,6 +37,12 @@ public class VolleySingleton {
         }
         return singleton;
     }
+    public static   VolleySingleton getInstanceAsinc(Context context) {
+        if (singleton == null) {
+            singleton = new VolleySingleton(context.getApplicationContext());
+        }
+        return singleton;
+    }
 
     /**
      * Obtiene la instancia de la cola de peticiones

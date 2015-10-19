@@ -42,7 +42,8 @@ public class ActividadPrincipal extends Activity {
 
     private ProgressDialog pDialog;
     private VolleySingleton requestQueue;
-    // Clase JSONParser
+    //
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,10 @@ public class ActividadPrincipal extends Activity {
         setContentView(R.layout.activity_actividad_principal);
 
         String id = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
-        Toast.makeText(getApplicationContext(), "ID DEL DISPOSITIVO:"+id, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "ID DEL DISPOSITIVO:" + id, Toast.LENGTH_LONG).show();
+
+        skipLogin(id);
+
         input_user = (EditText) findViewById(R.id.input_user);
         input_password = (EditText) findViewById(R.id.input_password);
         buttom_iniciar_sesion = (Button) findViewById(R.id.buttom_iniciar_sesion);
@@ -122,8 +126,58 @@ public class ActividadPrincipal extends Activity {
                                         }
                                 )
                         );
+
+
             }
         });
+    }
+
+    private void skipLogin(String id_dispositivo) {
+        final String newUrl = Constantes.MOVILE_USER_UPDATE + id_dispositivo;
+        // Realizar petición de logeo
+        VolleySingleton.getInstance(getApplicationContext()).
+                addToRequestQueue(
+                        new JsonObjectRequest(
+                                Request.Method.GET,
+                                newUrl,
+                                (String) null,
+                                new Response.Listener<JSONObject>() {
+
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+
+                                            //obtener la psocion success del json
+                                            Boolean success = Boolean.valueOf(response.getString("success"));
+
+                                            if (success) {
+
+//                                                Intent i = new Intent(ActividadPrincipal.this, ActividadSecundaria.class);
+//                                                finish();
+//                                                startActivity(i);
+
+                                            } else {
+
+
+                                            }
+
+                                        } catch (JSONException e) {
+//                                                    Toast.makeText(ActividadPrincipal.this, "Error de Codificacion " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                            Toast.makeText(ActividadPrincipal.this, "Error de conexión" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        pDialog.hide();
+                                        Toast.makeText(getApplicationContext(), "Error de conexión ", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        )
+                );
+
+
     }
 
 
@@ -142,7 +196,6 @@ public class ActividadPrincipal extends Activity {
 
             } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(ActividadPrincipal.this);
-                boolean mostro = true;
                 AlertDialog alert11 = null;
                 try {
 
@@ -152,9 +205,9 @@ public class ActividadPrincipal extends Activity {
                         EditText campo = null;
                         switch (key) {
                             case "username":
-// campo = (EditText) findViewById(R.id.input_user);
-//  campo.setHint(MyUtil.obtenerError(maping, key));
-//  campo.setHintTextColor(getResources().getColor(R.color.red_300));
+                                // campo = (EditText) findViewById(R.id.input_user);
+                                //  campo.setHint(MyUtil.obtenerError(maping, key));
+                                //  campo.setHintTextColor(getResources().getColor(R.color.red_300));
                                 builder1.setMessage(MyUtil.obtenerError(maping, key));
 
                                 builder1.setPositiveButton("Aceptar",
@@ -166,17 +219,14 @@ public class ActividadPrincipal extends Activity {
 
 
                                 alert11 = builder1.create();
-                                if (mostro) {
-                                    alert11.show();
-                                } else {
-                                    mostro = false;
-                                }
+
+                                alert11.show();
 
                                 break;
                             case "password":
-//campo = (EditText) findViewById(R.id.input_password);
-//campo.setHint(MyUtil.obtenerError(maping, key));
-//campo.setHintTextColor(getResources().getColor(R.color.red_300));
+                                //campo = (EditText) findViewById(R.id.input_password);
+                                //campo.setHint(MyUtil.obtenerError(maping, key));
+                                //campo.setHintTextColor(getResources().getColor(R.color.red_300));
                                 builder1.setMessage(MyUtil.obtenerError(maping, key));
 
                                 builder1.setPositiveButton("Aceptar",
@@ -188,15 +238,12 @@ public class ActividadPrincipal extends Activity {
 
 
                                 alert11 = builder1.create();
-                                if (mostro) {
-                                    alert11.show();
-                                } else {
-                                    mostro = false;
-                                }
+                                alert11.show();
 
                                 break;
                         }
 
+                        break;
                     }
 
 
@@ -209,7 +256,7 @@ public class ActividadPrincipal extends Activity {
             }
 
         } catch (JSONException e) {
-//                                                    Toast.makeText(ActividadPrincipal.this, "Error de Codificacion " + e.getMessage(), Toast.LENGTH_LONG).show();
+//  Toast.makeText(ActividadPrincipal.this, "Error de Codificacion " + e.getMessage(), Toast.LENGTH_LONG).show();
             Toast.makeText(ActividadPrincipal.this, "Error de conexión" + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }

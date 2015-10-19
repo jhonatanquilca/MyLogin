@@ -26,6 +26,9 @@ public class Constantes {
     public static final String LOGIN = IP + PUERTO_HOST + project + "/cruge/uiWs/login/";
     public static final String LOGOUT = IP + PUERTO_HOST + project + "/cruge/uiWs/logout";
 
+    public static final String MOVILE_USER_CREATE = IP + PUERTO_HOST + project + "movil/movilUserWS/create";
+    public static final String MOVILE_USER_UPDATE = IP + PUERTO_HOST + project + "/movil/movilUserWS/update/id/";
+
     /**
      * Clave para el valor extra que representa al identificador de un Cliente
      */
