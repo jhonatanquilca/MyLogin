@@ -170,7 +170,6 @@ public class ActividadPrincipal extends Activity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        pDialog.hide();
                                         Toast.makeText(getApplicationContext(), "Error de conexión ", Toast.LENGTH_LONG).show();
                                     }
                                 }
