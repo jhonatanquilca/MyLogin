@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import login.mylogin.R;
@@ -39,10 +40,13 @@ public class ActividadPrincipal extends Activity {
     private EditText input_user;
     private EditText input_password;
     private Button buttom_iniciar_sesion;
+    String usuarioLogeo;
+
+
+    String idDispositivo;
 
     private ProgressDialog pDialog;
     private VolleySingleton requestQueue;
-    //
 
 
     @Override
@@ -50,10 +54,10 @@ public class ActividadPrincipal extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_principal);
 
-        String id = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
-        Toast.makeText(getApplicationContext(), "ID DEL DISPOSITIVO:" + id, Toast.LENGTH_LONG).show();
 
-        skipLogin(id);
+        idDispositivo = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
+
+        skipLogin(idDispositivo);
 
         input_user = (EditText) findViewById(R.id.input_user);
         input_password = (EditText) findViewById(R.id.input_password);
@@ -106,7 +110,7 @@ public class ActividadPrincipal extends Activity {
                 VolleySingleton.getInstance(getApplicationContext()).
                         addToRequestQueue(
                                 new JsonObjectRequest(
-                                        Request.Method.GET,
+                                        Request.Method.POST,
                                         newUrl,
                                         (String) null,
                                         new Response.Listener<JSONObject>() {
@@ -133,12 +137,14 @@ public class ActividadPrincipal extends Activity {
     }
 
     private void skipLogin(String id_dispositivo) {
+
         final String newUrl = Constantes.MOVILE_USER_UPDATE + id_dispositivo;
         // Realizar petición de logeo
+        final String finalId_dispositivo = id_dispositivo;
         VolleySingleton.getInstance(getApplicationContext()).
                 addToRequestQueue(
                         new JsonObjectRequest(
-                                Request.Method.GET,
+                                Request.Method.POST,
                                 newUrl,
                                 (String) null,
                                 new Response.Listener<JSONObject>() {
@@ -152,31 +158,187 @@ public class ActividadPrincipal extends Activity {
 
                                             if (success) {
 
-//                                                Intent i = new Intent(ActividadPrincipal.this, ActividadSecundaria.class);
-//                                                finish();
-//                                                startActivity(i);
+//                                                String id_usuario = response.getString("id_user");
+                                                String id_usuario = ((response.has("id_user") && !response.isNull("id_user"))) ? response.getString("id_user") : "";
+
+                                                if (id_usuario.equals("") || id_usuario.equals("-")) {
+                                                    Toast.makeText(getApplicationContext(), "Usuario:" + id_usuario, Toast.LENGTH_LONG).show();
+
+                                                } else {
+                                                    Toast.makeText(getApplicationContext(), "Logeado:" + id_usuario, Toast.LENGTH_LONG).show();
+
+                                                    Intent i = new Intent(ActividadPrincipal.this, ActividadSecundaria.class);
+                                                    finish();
+                                                    startActivity(i);
+                                                }
+
 
                                             } else {
-
-
+//                                                crear Movil user si no existe
+                                                crearMovileUser(finalId_dispositivo);
                                             }
 
                                         } catch (JSONException e) {
-//                                                    Toast.makeText(ActividadPrincipal.this, "Error de Codificacion " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                            Toast.makeText(ActividadPrincipal.this, "Error de conexión" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                            Toast.makeText(ActividadPrincipal.this, "Error de conexión on consulta de usuario json" + e.getMessage(), Toast.LENGTH_LONG).show();
                                         }
                                     }
+
+
                                 },
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getApplicationContext(), "Error de conexión ", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), "Error de conexión on consulta de usuario peticion ", Toast.LENGTH_LONG).show();
                                     }
                                 }
                         )
                 );
 
 
+    }
+
+    private void crearMovileUser(String id_dispositivo) {
+
+        HashMap<String, String> map = new HashMap<>();// Mapeo previo pra convertir a jason
+        map.put("id_dispositivo", id_dispositivo);
+
+
+        // Crear nuevo objeto Json basado en el mapa
+        JSONObject jsonMovilUser = new JSONObject(map);
+
+        String newUrl = Constantes.MOVILE_USER_CREATE;
+        VolleySingleton.getInstance(getApplicationContext()).
+                addToRequestQueue(
+                        new JsonObjectRequest(
+                                Request.Method.POST,
+                                newUrl,
+                                jsonMovilUser,
+                                new Response.Listener<JSONObject>() {
+
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+
+                                            //obtener la psocion success del json
+                                            Boolean success = Boolean.valueOf(response.getString("success"));
+
+                                            if (success) {
+                                                Toast.makeText(getApplicationContext(), "Exito al crear el usuario", Toast.LENGTH_SHORT).show();
+
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "Error de coneccion al crear el usuario", Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                        } catch (JSONException e) {
+                                            Toast.makeText(ActividadPrincipal.this, "Error de conexión de creacion on json" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), "Error de conexión creacion on peticion ", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        )
+                );
+    }
+
+    private void actualizarMovileUser(String id_dispositivo, String id_usuario_logeo) {
+
+
+        HashMap<String, String> map = new HashMap<>();// Mapeo previo pra convertir a jason
+        map.put("id_dispositivo", id_dispositivo);
+        map.put("id_user", id_usuario_logeo);
+        map.put("estado", "IN");
+
+        // Crear nuevo objeto Json basado en el mapa
+        JSONObject jsonMovilUser = new JSONObject(map);
+
+        String newUrl = Constantes.MOVILE_USER_UPDATE + id_dispositivo;
+
+        VolleySingleton.getInstance(getApplicationContext()).
+                addToRequestQueue(
+                        new JsonObjectRequest(
+                                Request.Method.GET,
+                                newUrl,
+                                jsonMovilUser,
+                                new Response.Listener<JSONObject>() {
+
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+
+                                            //obtener la psocion success del json
+                                            Boolean success = Boolean.valueOf(response.getString("success"));
+
+                                            if (success) {
+
+                                                Toast.makeText(getApplicationContext(), "Exito al actualizar el usuario", Toast.LENGTH_SHORT).show();
+
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "Error de coneccion al actualizar el usuario", Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                        } catch (JSONException e) {
+                                            Toast.makeText(ActividadPrincipal.this, "Error de conexión de actualizar on json" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), "Error de conexión actualizar on peticion ", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        )
+                );
+    }
+
+    private void loadMovileUser(String id_dispositivo) {
+
+        String newUrl = Constantes.MOVILE_USER_UPDATE + id_dispositivo;
+        Toast.makeText(getApplicationContext(), newUrl, Toast.LENGTH_LONG).show();
+        VolleySingleton.getInstance(getApplicationContext()).
+                addToRequestQueue(
+                        new JsonObjectRequest(
+                                Request.Method.POST,
+                                newUrl,
+                                (String) null,
+                                new Response.Listener<JSONObject>() {
+
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+
+                                            //obtener la psocion success del json
+                                            Boolean success = Boolean.valueOf(response.getString("success"));
+
+                                            if (success) {
+                                                usuarioLogeo = response.getString("id_user");
+
+                                                Toast.makeText(getApplicationContext(), "Exito al actualizar el usuario", Toast.LENGTH_SHORT).show();
+
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "Error de coneccion al actualizar el usuario", Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                        } catch (JSONException e) {
+                                            Toast.makeText(ActividadPrincipal.this, "Error de conexión de actualizar on json" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), "Error de peticion load usuario", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        )
+                );
     }
 
 
@@ -189,9 +351,13 @@ public class ActividadPrincipal extends Activity {
             if (success) {
                 pDialog.hide();
                 /*paso a la sigiente penatalla*/
-                Intent i = new Intent(ActividadPrincipal.this, ActividadSecundaria.class);
-                finish();
-                startActivity(i);
+                loadMovileUser(idDispositivo);
+
+                actualizarMovileUser(idDispositivo, usuarioLogeo);
+                Toast.makeText(getApplicationContext(), "Id logeo:" + usuarioLogeo, Toast.LENGTH_SHORT).show();
+//                Intent i = new Intent(ActividadPrincipal.this, ActividadSecundaria.class);
+//                finish();
+//                startActivity(i);
 
             } else {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(ActividadPrincipal.this);
@@ -259,5 +425,6 @@ public class ActividadPrincipal extends Activity {
             Toast.makeText(ActividadPrincipal.this, "Error de conexión" + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
 
 }

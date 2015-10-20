@@ -15,6 +15,7 @@ public class Constantes {
      */
     private static final String PUERTO_HOST = onLine ? "" : ":80";
 
+
     /**
      * Dirección IP de genymotion o AVD
      */
@@ -26,7 +27,7 @@ public class Constantes {
     public static final String LOGIN = IP + PUERTO_HOST + project + "/cruge/uiWs/login/";
     public static final String LOGOUT = IP + PUERTO_HOST + project + "/cruge/uiWs/logout";
 
-    public static final String MOVILE_USER_CREATE = IP + PUERTO_HOST + project + "movil/movilUserWS/create";
+    public static final String MOVILE_USER_CREATE = IP + PUERTO_HOST + project + "/movil/movilUserWS/create";
     public static final String MOVILE_USER_UPDATE = IP + PUERTO_HOST + project + "/movil/movilUserWS/update/id/";
 
     /**
