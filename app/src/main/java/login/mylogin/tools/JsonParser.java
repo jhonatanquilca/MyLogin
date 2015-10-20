@@ -39,8 +39,8 @@ public class JsonParser {
         JsonParser.generalJson = generalJson;
     }
 
-    public void jsonFronUrl(String url, final ProgressDialog progresDialog) {
-
+    public JSONObject jsonFronUrl(String url, final ProgressDialog progresDialog) {
+JSONObject jsonResult=null;
 
         VolleySingleton.getInstanceAsinc(context).
                 addToRequestQueue(
@@ -52,7 +52,8 @@ public class JsonParser {
 
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        JsonParser.setGeneralJson(response);
+                                            Log.i("Json Parser", response.toString());
+                                        jsonResult=response;
                                         Log.i("Json Parser", response.toString());
                                     }
 
@@ -68,7 +69,8 @@ public class JsonParser {
                                 }
                         )
                 );
-        Log.i("Json Parser", generalJson != null ? generalJson.toString() : "nose que pasa");
+        Log.i("Json Parser", jsonResult != null ? jsonResult : "nose que pasa");
+        return jsonResult
     }
 
 
