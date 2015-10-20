@@ -52,6 +52,14 @@ JSONObject jsonResult=null;
 
                                     @Override
                                     public void onResponse(JSONObject response) {
+                                        //super().onResume();
+                                        //getStrnig(new VolleyCallback(){
+                                          //@Override
+                                          //publick void onSuccess(String result){
+                                            //do suff here  
+                                          //}
+                                        //}
+                                        //);
                                             Log.i("Json Parser", response.toString());
                                         jsonResult=response;
                                         Log.i("Json Parser", response.toString());
