@@ -29,6 +29,7 @@ public class Constantes {
 
     public static final String MOVILE_USER_CREATE = IP + PUERTO_HOST + project + "/movil/movilUserWS/create";
     public static final String MOVILE_USER_UPDATE = IP + PUERTO_HOST + project + "/movil/movilUserWS/update/id/";
+    public static final String MOVILE_USER_VIEW = IP + PUERTO_HOST + project + "/movil/movilUserWS/view/id/";
 
     /**
      * Clave para el valor extra que representa al identificador de un Cliente
